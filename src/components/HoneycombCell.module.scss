@@ -1,0 +1,82 @@
+@import '../styles/custom-properties.module.scss';
+
+*,
+*::before,
+*:after {
+  box-sizing: inherit;
+}
+.hive {
+  width: 90%;
+  margin: 25px auto;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  vertical-align: baseline;
+}
+
+.honeycomb {
+  position: relative;
+  width: 100%;
+  max-height: 265px;
+  padding-bottom: 103.92305%;
+}
+
+.cellWrapper {
+  //svg
+  position: absolute;
+  top: calc(100% / 3);
+  left: 30%;
+  width: 46%;
+  height: calc(100% / 2.6);
+  overflow: hidden;
+}
+#middleCell {
+  transform: translate(0, 0);
+}
+#cell1 {
+  transform: translate(-75%, -50%);
+}
+#cell2 {
+  transform: translate(0, -100%);
+}
+#cell3 {
+  transform: translate(75%, -50%);
+}
+#cell4 {
+  transform: translate(75%, 50%);
+}
+#cell5 {
+  transform: translate(0, 100%);
+}
+#cell6 {
+  transform: translate(-75%, 50%);
+}
+
+.outsideCell {
+  fill: var(--bee-gray);
+}
+
+.middleCell {
+  fill: var(--bee-yellow);
+}
+.outsideCell,
+.middleCell {
+  cursor: pointer;
+  // position: absolute;
+  // top: calc(100% / 3);
+  // left: 30%;
+  // width: 40%;
+  // height: calc(100% / 3);
+  transition: all 100ms;
+}
+.cellLetter {
+  font-weight: 700;
+  font-size: 1.875em;
+  text-anchor: middle;
+  text-transform: uppercase;
+  pointer-events: none;
+  display: block;
+  white-space: nowrap;
+}

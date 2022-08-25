@@ -1,0 +1,8 @@
+@import '../styles/custom-properties.module.scss';
+
+.gameArea {
+  width: 80vw;
+  max-width: 290px;
+  z-index: 3;
+  padding-bottom: 45px;
+}
