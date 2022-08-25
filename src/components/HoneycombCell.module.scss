@@ -7,7 +7,7 @@
 }
 .hive {
   width: 90%;
-  margin: 25px auto;
+  margin: 55px auto;
   -webkit-tap-highlight-color: transparent;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -31,6 +31,11 @@
   width: 46%;
   height: calc(100% / 2.6);
   overflow: hidden;
+  transition: all 100ms;
+}
+.cellWrapper:active {
+  // transform: scale3d(0.86, 0.86, 1);
+  // transform-origin: center center;
 }
 #middleCell {
   transform: translate(0, 0);
@@ -64,12 +69,13 @@
 .outsideCell,
 .middleCell {
   cursor: pointer;
-  // position: absolute;
-  // top: calc(100% / 3);
-  // left: 30%;
-  // width: 40%;
-  // height: calc(100% / 3);
+  background-color: white;
   transition: all 100ms;
+}
+.outsideCell:active,
+.middleCell:active {
+  transform: scale3d(0.86, 0.86, 1);
+  transform-origin: center center;
 }
 .cellLetter {
   font-weight: 700;
@@ -79,4 +85,5 @@
   pointer-events: none;
   display: block;
   white-space: nowrap;
+  transform: none;
 }

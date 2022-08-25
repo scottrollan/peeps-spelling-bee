@@ -1,0 +1,44 @@
+@import '../styles/custom-properties.module.scss';
+
+.actions {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+}
+
+.action {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  width: 5.5em;
+  min-width: 5.5em;
+  height: 3em;
+  background-color: white;
+  font-size: 1em;
+  margin: 0 8px;
+  color: #333;
+  border: 1px solid #dcdcdc;
+  border-radius: 2.5em;
+  letter-spacing: 0.01em;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -user-select: none;
+  cursor: pointer;
+}
+.action:hover {
+  background-color: var(--bee-light-gray);
+}
+.delete {
+}
+
+.refresh {
+  width: 3em;
+  min-width: 3em;
+}
+.arrows {
+  height: 1.25em;
+}
