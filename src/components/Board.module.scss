@@ -2,7 +2,11 @@
 
 .gameArea {
   width: 80vw;
-  max-width: 290px;
+  height: 100vh;
   z-index: 3;
   padding-bottom: 45px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }

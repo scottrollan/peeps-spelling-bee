@@ -1,0 +1,10 @@
+@import '../styles/custom-properties.module.scss';
+
+.messageBox {
+  background-color: black;
+  color: white;
+  font-size: 0.8em;
+  width: 12em;
+  padding: 6px 15px;
+  border-radius: 0.3em;
+}

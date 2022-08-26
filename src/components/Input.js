@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Input({ guessLtrs }) {
   return (
-    <div style={{ minHeight: '3.25em' }}>
+    <div style={{ minHeight: '3.25em', margin: '15px 0' }}>
       <span style={styles.input}>{guessLtrs}</span>
     </div>
   );

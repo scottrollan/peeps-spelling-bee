@@ -29,10 +29,8 @@
   -user-select: none;
   cursor: pointer;
 }
-.action:hover {
+.action:active {
   background-color: var(--bee-light-gray);
-}
-.delete {
 }
 
 .refresh {

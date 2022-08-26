@@ -1,24 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import HoneycombCell from './HoneycombCell';
+import MessageBox from './MessageBox';
 import Input from './Input';
 import CommandButtons from './CommandButtons';
 import axios from 'axios';
-// import { Form, Button } from 'react-bootstrap';
-// import solve from 'spelling-bee-solver';
-// import { loadLetters } from '../functions/loadLetters';
 import $ from 'jquery';
 import styles from './Board.module.scss';
-
-// const { REACT_APP_WORDSAPI_KEY } = process.env;
 
 export default function Board() {
   const [middleLetter, setMiddleLetter] = useState('');
   const [outerLetters, setOuterLetters] = useState([]);
   const [solutions, setSolutions] = useState([]);
   const [guessLtrs, setGuessLtrs] = useState('');
+  const [message, setMessage] = useState('|');
 
   const setNewLtr = (l) => {
     setGuessLtrs(guessLtrs.concat(l));
+  };
+
+  const shuffle = () => {
+    let ltrArr = [...outerLetters];
+    for (let i = ltrArr.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      let temp = ltrArr[i];
+      ltrArr[i] = ltrArr[j];
+      ltrArr[j] = temp;
+      setOuterLetters([...ltrArr]);
+    }
   };
 
   useEffect(() => {
@@ -54,18 +62,16 @@ export default function Board() {
 
   return (
     <div className={styles.gameArea}>
+      <MessageBox message={message} />
       <Input guessLtrs={guessLtrs} />
 
-      <div>
-        <div>
-          <HoneycombCell
-            middleLetter={middleLetter}
-            outerLetters={outerLetters}
-            setNewLtr={setNewLtr}
-          />
-        </div>
-      </div>
-      <CommandButtons />
+      <HoneycombCell
+        middleLetter={middleLetter}
+        outerLetters={outerLetters}
+        setNewLtr={setNewLtr}
+      />
+
+      <CommandButtons shuffle={shuffle} />
     </div>
   );
 }
