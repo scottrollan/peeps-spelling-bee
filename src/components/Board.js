@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import HoneycombCell from './HoneycombCell';
+import Progress from './Progress';
 import MessageBox from './MessageBox';
 import Input from './Input';
 import CommandButtons from './CommandButtons';
@@ -16,7 +17,8 @@ export default function Board() {
   });
   const [points, setPoints] = useState(0);
   const [guessLtrs, setGuessLtrs] = useState('');
-  const [message, setMessage] = useState('');
+  const [alreadyPlayed, setAlreadyPlayed] = useState([]);
+  const [message, setMessage] = useState('Nice!');
 
   const setNewLtr = (l) => {
     setGuessLtrs(guessLtrs.concat(l));
@@ -43,30 +45,44 @@ export default function Board() {
     const allLetters = puzzleInfo.outerLetters.concat(puzzleInfo.middleLetter);
     console.log(allLetters);
     const solutionsArr = puzzleInfo.solutions;
-    let guessLength = guessLtrs.length;
-    let validWord = solutionsArr.includes(guessLtrs);
-    if (validWord) {
-      let addPoints = points + guessLtrs.length;
-
+    let guess = guessLtrs;
+    let guessLength = guess.length;
+    let hasBeenPlayed = alreadyPlayed.includes(guess);
+    let validWord = solutionsArr.includes(guess);
+    if (hasBeenPlayed) {
+      setMessage('Already found!');
+      setGuessLtrs('');
+      return;
+    }
+    if (validWord && !hasBeenPlayed) {
+      setAlreadyPlayed([...alreadyPlayed, guess]);
+      let addPoints = points + guessLength;
       switch (true) {
+        case guess.includes(allLetters[0]) &&
+          guess.includes(allLetters[1]) &&
+          guess.includes(allLetters[2]) &&
+          guess.includes(allLetters[3]) &&
+          guess.includes(allLetters[4]) &&
+          guess.includes(allLetters[5]) &&
+          guess.includes(allLetters[6]):
+          setMessage('PANGRAM!!');
+          addPoints = points + guessLength + 7;
+          break;
         case guessLength === 4:
           setMessage('Good!');
           addPoints = points + 1;
-          setPoints(addPoints);
           break;
         case guessLength === 5 || guessLength === 6:
           setMessage('Nice!');
-          setPoints(addPoints);
           break;
         case guessLength > 6:
           setMessage('Awesome!');
-          setPoints(addPoints);
           break;
         default:
           setMessage('Awesome!');
-          setPoints(addPoints);
           break;
       }
+      setPoints(addPoints);
     } else {
       setMessage('Not Found');
     }
@@ -112,9 +128,10 @@ export default function Board() {
 
   return (
     <div className={styles.gameArea}>
-      <p>
-        {points} {Math.round((points / puzzleInfo.possiblePoints) * 100)}%
-      </p>
+      <Progress
+        points={points}
+        percentage={Math.round((points / puzzleInfo.possiblePoints) * 100)}
+      />
       <MessageBox message={message} />
       <Input guessLtrs={guessLtrs} />
 

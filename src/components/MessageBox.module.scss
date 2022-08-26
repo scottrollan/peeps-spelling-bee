@@ -1,6 +1,7 @@
 @import '../styles/custom-properties.module.scss';
 
 .messageBox {
+  visibility: hidden;
   background-color: black;
   color: white;
   font-size: 0.8em;
