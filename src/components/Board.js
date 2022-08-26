@@ -8,38 +8,83 @@ import $ from 'jquery';
 import styles from './Board.module.scss';
 
 export default function Board() {
-  const [middleLetter, setMiddleLetter] = useState('');
-  const [outerLetters, setOuterLetters] = useState([]);
-  const [solutions, setSolutions] = useState([]);
+  const [puzzleInfo, setPuzzleInfo] = useState({
+    middleLetter: '',
+    outerLetters: [],
+    solutions: [],
+    possiblePoints: 0,
+  });
+  const [points, setPoints] = useState(0);
   const [guessLtrs, setGuessLtrs] = useState('');
-  const [message, setMessage] = useState('|');
+  const [message, setMessage] = useState('');
 
   const setNewLtr = (l) => {
     setGuessLtrs(guessLtrs.concat(l));
   };
 
+  const deleteLtr = () => {
+    const ltrs = guessLtrs; //str
+    const newLtrs = ltrs.slice(0, -1);
+    setGuessLtrs(newLtrs);
+  };
+
   const shuffle = () => {
-    let ltrArr = [...outerLetters];
+    let ltrArr = puzzleInfo.outerLetters;
     for (let i = ltrArr.length - 1; i > 0; i--) {
       let j = Math.floor(Math.random() * (i + 1));
       let temp = ltrArr[i];
       ltrArr[i] = ltrArr[j];
       ltrArr[j] = temp;
-      setOuterLetters([...ltrArr]);
+      setPuzzleInfo({ ...puzzleInfo, outerLetters: [...ltrArr] });
     }
+  };
+
+  const tryWord = () => {
+    const allLetters = puzzleInfo.outerLetters.concat(puzzleInfo.middleLetter);
+    console.log(allLetters);
+    const solutionsArr = puzzleInfo.solutions;
+    let guessLength = guessLtrs.length;
+    let validWord = solutionsArr.includes(guessLtrs);
+    if (validWord) {
+      let addPoints = points + guessLtrs.length;
+
+      switch (true) {
+        case guessLength === 4:
+          setMessage('Good!');
+          addPoints = points + 1;
+          setPoints(addPoints);
+          break;
+        case guessLength === 5 || guessLength === 6:
+          setMessage('Nice!');
+          setPoints(addPoints);
+          break;
+        case guessLength > 6:
+          setMessage('Awesome!');
+          setPoints(addPoints);
+          break;
+        default:
+          setMessage('Awesome!');
+          setPoints(addPoints);
+          break;
+      }
+    } else {
+      setMessage('Not Found');
+    }
+    setGuessLtrs('');
   };
 
   useEffect(() => {
     let outerLtrs;
     let midLtr;
-    let possiblePoints;
+    let pts;
     let sol;
+
     const getNewPuzzle = async () => {
       let newPuzzleData = await axios.get('https://freebee.fun/cgi-bin/random');
       let newPuzzle = newPuzzleData.data;
       outerLtrs = newPuzzle.letters.split('');
       midLtr = newPuzzle.center;
-      possiblePoints = newPuzzle.total;
+      pts = newPuzzle.total;
       sol = newPuzzle.wordlist;
 
       switch (true) {
@@ -51,27 +96,39 @@ export default function Board() {
           break;
         default:
           console.log(`Found a puzzle that meets your criteria`);
-          setOuterLetters([...outerLtrs]);
-          setMiddleLetter(midLtr);
-          setSolutions([...sol]);
+          setPuzzleInfo({
+            outerLetters: [...outerLtrs],
+            middleLetter: midLtr,
+            solutions: [...sol],
+            possiblePoints: pts,
+          });
           break;
       }
     };
+    setPoints(0);
+    setGuessLtrs('');
     getNewPuzzle();
   }, []);
 
   return (
     <div className={styles.gameArea}>
+      <p>
+        {points} {Math.round((points / puzzleInfo.possiblePoints) * 100)}%
+      </p>
       <MessageBox message={message} />
       <Input guessLtrs={guessLtrs} />
 
       <HoneycombCell
-        middleLetter={middleLetter}
-        outerLetters={outerLetters}
+        middleLetter={puzzleInfo.middleLetter}
+        outerLetters={puzzleInfo.outerLetters}
         setNewLtr={setNewLtr}
       />
 
-      <CommandButtons shuffle={shuffle} />
+      <CommandButtons
+        deleteLtr={deleteLtr}
+        shuffle={shuffle}
+        tryWord={tryWord}
+      />
     </div>
   );
 }
